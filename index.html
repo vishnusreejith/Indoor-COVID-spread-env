@@ -282,7 +282,7 @@
                         </label>
                         <!-- NEW Weather Button -->
                         <button type="button" id="getWeatherBtn" class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
-                            Get Local Weather
+                            Get Temperature and Humidity from sensor data
                         </button>
                     </div>
                     <input type="text" inputmode="decimal" id="temperature" name="temperature" placeholder="e.g., 22.5" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
@@ -899,7 +899,7 @@
                         inputs.temperature.value = temp;
                         inputs.humidity.value = hum;
                         
-                        weatherStatus.textContent = 'Local weather data populated.';
+                        weatherStatus.textContent = 'Sensor data populated.';
                         weatherStatus.classList.remove('hidden-page');
 
                     } catch (error) {
@@ -908,7 +908,7 @@
                         weatherStatus.classList.add('text-red-400');
                     } finally {
                         getWeatherBtn.disabled = false;
-                        getWeatherBtn.textContent = 'Get Local Weather';
+                        getWeatherBtn.textContent = 'Get temperature and humidity from sensor data';
                     }
                 };
 
@@ -925,7 +925,7 @@
                     weatherStatus.classList.remove('hidden-page');
                     weatherStatus.classList.add('text-red-400');
                     getWeatherBtn.disabled = false;
-                    getWeatherBtn.textContent = 'Get Local Weather';
+                    getWeatherBtn.textContent = 'Get temperature and humidity from sensor data';
                 };
 
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
@@ -937,3 +937,4 @@
     </script>
 </body>
 </html>
+
