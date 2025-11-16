@@ -249,13 +249,19 @@
                     <p id="manual-co2-error" class="text-red-600 text-sm text-center hidden"></p>
                 </div>
             </div>
+
+            <!-- Info Button -->
+            <div class="text-center mt-6">
+                <button type="button" id="goToInfoBtn" class="text-sm text-blue-600 hover:underline">
+                    Why does CO₂ level matter for risk?
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- 
       PAGE 2: COVID RISK ESTIMATOR 
       (Adapted from index.html, PM inputs removed)
-      THIS HTML WAS MISSING IN THE PREVIOUS VERSION
     -->
     <div id="covidRiskPage" class="max-w-md w-full hidden-page">
         <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
@@ -270,9 +276,15 @@
             <form id="risk-form" class="space-y-4">
                 <!-- Temperature -->
                 <div>
-                    <label for="temperature" class="block text-sm font-medium text-gray-300 mb-1">
-                        Temperature (°C)
-                    </label>
+                    <div class="flex justify-between items-center mb-1">
+                        <label for="temperature" class="block text-sm font-medium text-gray-300">
+                            Temperature (°C)
+                        </label>
+                        <!-- NEW Weather Button -->
+                        <button type="button" id="getWeatherBtn" class="text-xs text-blue-400 hover:text-blue-300 transition-colors">
+                            Get Local Weather
+                        </button>
+                    </div>
                     <input type="text" inputmode="decimal" id="temperature" name="temperature" placeholder="e.g., 22.5" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
@@ -283,6 +295,9 @@
                     </label>
                     <input type="text" inputmode="decimal" id="humidity" name="humidity" placeholder="e.g., 55" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
+                
+                <!-- NEW Weather Status Message -->
+                <p id="weather-status" class="text-xs text-center text-gray-400 hidden-page"></p>
 
                 <!-- CO2 -->
                 <div>
@@ -320,6 +335,50 @@
              <button id="goToCo2Btn" class="w-full mt-6 text-sm text-gray-400 hover:text-white transition-colors">
                 &larr; Back to CO₂ Estimator
              </button>
+
+             <!-- Info Button -->
+             <button type="button" id="goToInfoBtn_risk" class="w-full mt-4 text-sm text-blue-400 hover:text-white transition-colors">
+                Why does CO₂ matter? (Info)
+            </button>
+        </div>
+    </div>
+
+    <!-- 
+      PAGE 3: INFO PAGE
+      (New Content)
+    -->
+    <div id="infoPage" class="max-w-md w-full hidden-page">
+        <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700 text-gray-300">
+            <h1 class="text-2xl font-bold text-center text-blue-400 mb-6">
+                CO₂ as a Risk Proxy
+            </h1>
+            
+            <div class="space-y-4 text-sm">
+                <p>This app uses CO₂ as an *indicator* for potential aerosol infection risk. Here’s why:</p>
+                
+                <h2 class="text-lg font-semibold text-white mt-4">The Source</h2>
+                <p>When people breathe, they exhale both <strong>Carbon Dioxide (CO₂)</strong> and tiny airborne particles called <strong>aerosols</strong>. If an person is sick with an airborne illness (like COVID-19 or the flu), their aerosols will be contaminated with the virus.</p>
+                
+                <h2 class="text-lg font-semibold text-white mt-4">The Buildup</h2>
+                <p>In a poorly ventilated indoor space, both CO₂ and infectious aerosols build up in the air over time. Every new breath adds more.</p>
+                
+                <h2 class="text-lg font-semibold text-white mt-4">The Connection</h2>
+                <p>A high CO₂ level means there is a high amount of <strong>rebreathed air</strong> in the room. This strongly implies that if an infected person is present, the concentration of infectious aerosols is *also* high, increasing the risk for everyone else.</p>
+                
+                <h2 class="text-lg font-semibold text-white mt-4">Important Notes:</h2>
+                <ul class="list-disc list-inside space-y-1 pl-2">
+                    <li>CO₂ is a <strong>proxy</strong>, not a direct measurement of viruses.</li>
+                    <li><strong>Air purifiers (HEPA filters)</strong> can remove infectious aerosols, but they do <strong>not</strong> remove CO₂. In this case, CO₂ would be high but risk might be lower.</li>
+                    <li><strong>Masks</strong> reduce the amount of aerosols (and viruses) released, but they do not stop CO₂.</li>
+                </ul>
+                
+                <p class="font-semibold text-white">The best action is to bring in fresh outdoor air (ventilation), which dilutes and removes *both* CO₂ and infectious aerosols at the same time.</p>
+            </div>
+
+            <!-- Back Button -->
+            <button id="backBtn_info" class="w-full mt-8 p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                Back to App
+            </button>
         </div>
     </div>
 
@@ -328,32 +387,64 @@
     <script>
         // --- Page Navigation & Data Transfer ---
         let co2ValueToTransfer = null; // Use a variable, not localStorage
+        let lastActivePage = 'co2'; // 'co2' or 'risk'
+        
         const co2Page = document.getElementById('co2EstimatorPage');
         const riskPage = document.getElementById('covidRiskPage');
+        const infoPage = document.getElementById('infoPage'); // NEW
+        
         const goToRiskBtn = document.getElementById('goToRiskBtn');
         const goToCo2Btn = document.getElementById('goToCo2Btn');
+        
+        // NEW Info Buttons
+        const goToInfoBtn = document.getElementById('goToInfoBtn');
+        const goToInfoBtn_risk = document.getElementById('goToInfoBtn_risk');
+        const backBtn_info = document.getElementById('backBtn_info');
 
         function showRiskPage() {
-            // Read from our variable instead of localStorage
             if (co2ValueToTransfer) {
-                // Find the CO2 input on the risk page and set its value
                 document.getElementById('co2').value = co2ValueToTransfer;
             }
-            // Clear the variable for next time (optional)
             co2ValueToTransfer = null;
             
             co2Page.classList.add('hidden-page');
             riskPage.classList.remove('hidden-page');
+            infoPage.classList.add('hidden-page'); // HIDE INFO
+            lastActivePage = 'risk'; // SET LAST
         }
 
         function showCo2Page() {
             riskPage.classList.add('hidden-page');
+            infoPage.classList.add('hidden-page'); // HIDE INFO
             co2Page.classList.remove('hidden-page');
+            lastActivePage = 'co2'; // SET LAST
+        }
+
+        // NEW Info Page Function
+        function showInfoPage() {
+            riskPage.classList.add('hidden-page');
+            co2Page.classList.add('hidden-page'); // HIDE CO2
+            infoPage.classList.remove('hidden-page'); // SHOW INFO
+        }
+        
+        // NEW Back from Info Function
+        function goBackFromInfo() {
+            infoPage.classList.add('hidden-page'); // HIDE INFO
+            if (lastActivePage === 'risk') {
+                riskPage.classList.remove('hidden-page');
+            } else {
+                co2Page.classList.remove('hidden-page'); // Default to CO2 page
+            }
         }
 
         // Attach navigation events
         goToRiskBtn.addEventListener('click', showRiskPage);
         goToCo2Btn.addEventListener('click', showCo2Page);
+        
+        // NEW Listeners
+        goToInfoBtn.addEventListener('click', showInfoPage);
+        goToInfoBtn_risk.addEventListener('click', showInfoPage);
+        backBtn_info.addEventListener('click', goBackFromInfo);
 
         // --- Start of CO2 Estimator JS (from Co2_estimation_corrected.html) ---
         (function() {
@@ -771,6 +862,76 @@
                 resultsContainer.classList.remove('hidden');
             });
             
+            // --- NEW: Weather Fetch Logic ---
+            const getWeatherBtn = document.getElementById('getWeatherBtn');
+            const weatherStatus = document.getElementById('weather-status');
+            
+            getWeatherBtn.addEventListener('click', () => {
+                if (!navigator.geolocation) {
+                    weatherStatus.textContent = 'Geolocation is not supported by your browser.';
+                    weatherStatus.classList.remove('hidden-page');
+                    weatherStatus.classList.add('text-red-400');
+                    return;
+                }
+
+                // Reset state
+                getWeatherBtn.disabled = true;
+                getWeatherBtn.textContent = 'Fetching...';
+                weatherStatus.classList.add('hidden-page');
+                weatherStatus.classList.remove('text-red-400');
+                
+                const successCallback = async (position) => {
+                    try {
+                        const { latitude, longitude } = position.coords;
+                        // Use the Open-Meteo API (no key required)
+                        const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m`;
+                        
+                        const response = await fetch(apiUrl);
+                        if (!response.ok) {
+                            throw new Error('Weather API request failed.');
+                        }
+                        const data = await response.json();
+                        
+                        const temp = data.current.temperature_2m;
+                        const hum = data.current.relative_humidity_2m;
+                        
+                        // Populate the fields
+                        inputs.temperature.value = temp;
+                        inputs.humidity.value = hum;
+                        
+                        weatherStatus.textContent = 'Local weather data populated.';
+                        weatherStatus.classList.remove('hidden-page');
+
+                    } catch (error) {
+                        weatherStatus.textContent = 'Error fetching weather. Please enter manually.';
+                        weatherStatus.classList.remove('hidden-page');
+                        weatherStatus.classList.add('text-red-400');
+                    } finally {
+                        getWeatherBtn.disabled = false;
+                        getWeatherBtn.textContent = 'Get Local Weather';
+                    }
+                };
+
+                const errorCallback = (error) => {
+                    let message = 'Could not get location. Please enter manually.';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        message = 'You denied location permission. Please enter manually.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        message = 'Location information is unavailable.';
+                    } else if (error.code === error.TIMEOUT) {
+                        message = 'Location request timed out.';
+                    }
+                    weatherStatus.textContent = message;
+                    weatherStatus.classList.remove('hidden-page');
+                    weatherStatus.classList.add('text-red-400');
+                    getWeatherBtn.disabled = false;
+                    getWeatherBtn.textContent = 'Get Local Weather';
+                };
+
+                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+            });
+            // --- End of NEW Weather Logic ---
+
         })();
         // --- End of COVID Risk JS ---
     </script>
