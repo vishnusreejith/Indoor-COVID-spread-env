@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>COVID-19 Risk Estimator</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Simple font styling */
+      body {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont,
+          'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+          'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+          'Noto Color Emoji';
+      }
+      /* Remove number input spinners for a cleaner look */
+      input[type='number']::-webkit-inner-spin-button,
+      input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      input[type='number'] {
+        -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+  <body
+    class="flex items-center justify-center min-h-screen bg-gray-900 text-white p-4"
+  >
+    <div
+      class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700"
+    >
+      <h1 class="text-3xl font-bold text-center text-blue-400 mb-2">
+        COVID-19 Risk Estimator
+      </h1>
+      <p class="text-center text-gray-400 text-sm mb-6">
+        Based on the APRI thresholds from Rucco et al.2025
+      </p>
+
+      <!-- --- Input Form --- -->
+      <form id="risk-form" class="space-y-4">
+        <!-- Temperature -->
+        <div>
+          <label
+            for="temperature"
+            class="block text-sm font-medium text-gray-300 mb-1"
+          >
+            Temperature (°C)
+          </label>
+          <input
+            type="number"
+            id="temperature"
+            name="temperature"
+            step="0.1"
+            placeholder="e.g., 22.5"
+            class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <!-- Humidity -->
+        <div>
+          <label
+            for="humidity"
+            class="block text-sm font-medium text-gray-300 mb-1"
+          >
+            Humidity (%)
+          </label>
+          <input
+            type="number"
+            id="humidity"
+            name="humidity"
+            step="0.1"
+            min="0"
+            max="100"
+            placeholder="e.g., 55"
+            class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <!-- CO2 -->
+        <div>
+          <label
+            for="co2"
+            class="block text-sm font-medium text-gray-300 mb-1"
+          >
+            CO₂ Concentration (ppm)
+          </label>
+          <input
+            type="number"
+            id="co2"
+            name="co2"
+            step="1"
+            min="0"
+            placeholder="e.g., 800"
+            class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <!-- PM10 -->
+        <div>
+          <label
+            for="pm10"
+            class="block text-sm font-medium text-gray-300 mb-1"
+          >
+            PM10 (μg/m³)
+          </label>
+          <input
+            type="number"
+            id="pm10"
+            name="pm10"
+            step="0.1"
+            min="0"
+            placeholder="e.g., 3.5"
+            class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <!-- PM2.5 -->
+        <div>
+          <label
+            for="pm25"
+            class="block text-sm font-medium text-gray-300 mb-1"
+          >
+            PM2.5 (μg/m³)
+          </label>
+          <input
+            type="number"
+            id="pm25"
+            name="pm25"
+            step="0.1"
+            min="0"
+            placeholder="e.g., 6.2"
+            class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+        </div>
+
+        <!-- Error Message -->
+        <p id="error-message" class="text-red-400 text-sm text-center"></p>
+
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg"
+        >
+          Calculate Risk
+        </button>
+      </form>
+
+      <!-- --- Result Display --- -->
+      <div id="results-container" class="mt-8 pt-6 border-t border-gray-700 space-y-6 hidden">
+        <!-- -- PM Risk (from ML Model) -- -->
+        <div id="pm-risk-result" class="p-4 rounded-lg border">
+          <h3 id="pm-risk-level" class="text-xl font-bold"></h3>
+          <p id="pm-risk-recommendation" class="mt-1 text-sm"></p>
+          <p class="text-xs text-gray-300 opacity-80 mt-2">
+            (Based on ML model finding)
+          </p>
+        </div>
+
+        <!-- -- Threshold Risk (Fig 3) -- -->
+        <div id="threshold-risk-result" class="p-4 rounded-lg border">
+          <h3 id="threshold-risk-level" class="text-xl font-bold"></h3>
+          <p id="threshold-risk-recommendation" class="mt-1 text-sm"></p>
+          <p class="text-xs text-gray-300 opacity-80 mt-2">
+            (Based on T, H, and CO₂ threshold rules)
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- --- JavaScript Logic --- -->
+    <script>
+      // --- Helper Function: Risk Calculation Logic (Figure 3) ---
+      const calculateRisk = (temp, humidity, co2) => {
+        if (co2 > 1000) {
+          return {
+            level: 'High',
+            color: 'bg-red-600',
+            textColor: 'text-red-100',
+            borderColor: 'border-red-500',
+            recommendation:
+              'High CO₂ detected. Immediate ventilation is strongly recommended.',
+          };
+        }
+        if ((temp > 24 && co2 <= 700) || (humidity < 50 && co2 <= 700)) {
+          return {
+            level: 'Low',
+            color: 'bg-green-600',
+            textColor: 'text-green-100',
+            borderColor: 'border-green-500',
+            recommendation: 'Conditions are favorable. Maintain good practices.',
+          };
+        }
+        return {
+          level: 'Medium',
+          color: 'bg-yellow-500',
+          textColor: 'text-yellow-100',
+          borderColor: 'border-yellow-400',
+          recommendation:
+            'Monitor conditions. Consider increasing ventilation or reducing occupancy.',
+        };
+      };
+
+      // --- Helper Function: PM Risk Calculation (Pages 5 & 7) ---
+      const calculatePMRisk = (pm10, pm25) => {
+        if (pm10 > 5 || pm25 > 5) {
+          return {
+            level: 'High PM Risk',
+            color: 'bg-red-600',
+            textColor: 'text-red-100',
+            borderColor: 'border-red-500',
+            recommendation:
+              'Particulate matter is high. This is a key risk factor. Air filtration is recommended.',
+          };
+        }
+        return {
+          level: 'Low PM Risk',
+          color: 'bg-green-600',
+          textColor: 'text-green-100',
+          borderColor: 'border-green-500',
+          recommendation:
+            'Particulate matter levels are within the low-risk threshold.',
+        };
+      };
+      
+      // --- All possible color classes to remove before adding new ones ---
+      const allColorClasses = [
+        'bg-red-600', 'text-red-100', 'border-red-500',
+        'bg-green-600', 'text-green-100', 'border-green-500',
+        'bg-yellow-500', 'text-yellow-100', 'border-yellow-400'
+      ];
+
+      // --- Main script execution ---
+      document.addEventListener('DOMContentLoaded', () => {
+        // Get all DOM elements
+        const form = document.getElementById('risk-form');
+        const inputs = {
+          temperature: document.getElementById('temperature'),
+          humidity: document.getElementById('humidity'),
+          co2: document.getElementById('co2'),
+          pm10: document.getElementById('pm10'),
+          pm25: document.getElementById('pm25'),
+        };
+        const errorMessage = document.getElementById('error-message');
+        const resultsContainer = document.getElementById('results-container');
+        
+        // PM Risk elements
+        const pmRiskResultEl = document.getElementById('pm-risk-result');
+        const pmRiskLevelEl = document.getElementById('pm-risk-level');
+        const pmRiskRecommendationEl = document.getElementById('pm-risk-recommendation');
+
+        // Threshold Risk elements
+        const thresholdRiskResultEl = document.getElementById('threshold-risk-result');
+        const thresholdRiskLevelEl = document.getElementById('threshold-risk-level');
+        const thresholdRiskRecommendationEl = document.getElementById('threshold-risk-recommendation');
+
+        // Handle form submission
+        form.addEventListener('submit', (e) => {
+          e.preventDefault(); // Stop form from reloading page
+          
+          // Clear previous error and hide results
+          errorMessage.textContent = '';
+          resultsContainer.classList.add('hidden');
+
+          // --- Get and parse values ---
+          const temp = parseFloat(inputs.temperature.value);
+          const hum = parseFloat(inputs.humidity.value);
+          const co2Val = parseFloat(inputs.co2.value);
+          const pm10Val = parseFloat(inputs.pm10.value);
+          const pm25Val = parseFloat(inputs.pm25.value);
+
+          // --- Input Validation ---
+          if (isNaN(temp) || isNaN(hum) || isNaN(co2Val) || isNaN(pm10Val) || isNaN(pm25Val)) {
+            errorMessage.textContent = 'Please fill in all fields with valid numbers.';
+            return;
+          }
+          if (hum < 0 || hum > 100) {
+            errorMessage.textContent = 'Humidity must be between 0 and 100.';
+            return;
+          }
+          if (co2Val < 0 || pm10Val < 0 || pm25Val < 0) {
+            errorMessage.textContent = 'Values cannot be negative.';
+            return;
+          }
+
+          // --- All data is valid, run calculations ---
+          const riskResult = calculateRisk(temp, hum, co2Val);
+          const pmRiskResult = calculatePMRisk(pm10Val, pm25Val);
+
+          // --- Update PM Risk Card ---
+          pmRiskLevelEl.textContent = pmRiskResult.level;
+          pmRiskRecommendationEl.textContent = pmRiskResult.recommendation;
+          // Clear old colors and add new ones
+          pmRiskResultEl.classList.remove(...allColorClasses);
+          pmRiskResultEl.classList.add(pmRiskResult.color, pmRiskResult.textColor, pmRiskResult.borderColor);
+
+          // --- Update Threshold Risk Card ---
+          thresholdRiskLevelEl.textContent = `${riskResult.level} Threshold Risk`;
+          thresholdRiskRecommendationEl.textContent = riskResult.recommendation;
+          // Clear old colors and add new ones
+          thresholdRiskResultEl.classList.remove(...allColorClasses);
+          thresholdRiskResultEl.classList.add(riskResult.color, riskResult.textColor, riskResult.borderColor);
+
+          // Show the results
+          resultsContainer.classList.remove('hidden');
+        });
+      });
+    </script>
+  </body>
+</html>
