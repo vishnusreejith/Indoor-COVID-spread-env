@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Combined Risk App</title>
-    <!-- Load Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
-    <!-- Use Inter font --><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -59,8 +61,8 @@
 
     <!-- 
       PAGE 1: CO2 ESTIMATOR 
-      (Adapted from Co2 estimation.html)
-    --><div id="co2EstimatorPage" class="max-w-md w-full">
+    -->
+    <div id="co2EstimatorPage" class="max-w-md w-full">
         <div class="bg-white rounded-lg shadow-xl p-6 md:p-8">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-4">
                 Step 1: Indoor CO₂ Estimator
@@ -69,9 +71,11 @@
                 Calculate steady-state indoor CO₂ concentration.
             </p>
 
-            <!-- CO2 Input Form --><form id="co2Form" class="space-y-4">
+            <!-- CO2 Input Form -->
+            <form id="co2Form" class="space-y-4">
                 
-                <!-- Outdoor CO2 --><div>
+                <!-- Outdoor CO2 -->
+                <div>
                     <label for="cOutdoor" class="block text-sm font-medium text-gray-700 mb-1">
                         Outdoor CO₂ Concentration (C<sub>outdoor</sub>)
                     </label>
@@ -81,14 +85,16 @@
                     </div>
                 </div>
 
-                <!-- Number of Occupants --><div>
+                <!-- Number of Occupants -->
+                <div>
                     <label for="occupants" class="block text-sm font-medium text-gray-700 mb-1">
                         Number of Occupants (n)
                     </label>
                     <input type="text" inputmode="numeric" id="occupants" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 10">
                 </div>
 
-                <!-- CO2 Generation Rate --><div>
+                <!-- CO2 Generation Rate -->
+                <div>
                     <label for="co2Rate" class="block text-sm font-medium text-gray-700 mb-1">
                         CO₂ Generation per Person (r)
                     </label>
@@ -100,7 +106,8 @@
                     </select>
                 </div>
 
-                <!-- Room Dimensions Section --><div class="space-y-2 pt-2">
+                <!-- Room Dimensions Section -->
+                <div class="space-y-2 pt-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Room Dimensions</label>
                     <div class="grid grid-cols-3 gap-2">
                         <div>
@@ -119,7 +126,8 @@
                     <p class="text-xs text-gray-500 mt-1">Required for "Estimate (ACH)" mode. Optional for other modes to show resulting ACH.</p>
                 </div>
 
-                <!-- Ventilation Rate Section --><div class="space-y-3 pt-2">
+                <!-- Ventilation Rate Section -->
+                <div class="space-y-3 pt-2">
                     <div>
                         <label for="vaModeSelect" class="block text-sm font-medium text-gray-700 mb-1">Ventilation Rate (V<sub>a</sub>) Mode</label>
                         <select id="vaModeSelect" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
@@ -132,14 +140,16 @@
                         </select>
                     </div>
 
-                    <!-- Direct Input Group --><div id="directVaGroup">
+                    <!-- Direct Input Group -->
+                    <div id="directVaGroup">
                         <div class="relative">
                             <input type="text" inputmode="decimal" id="ventilation" class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" placeholder="e.g., 100">
                             <span class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">L/s</span>
                         </div>
                     </div>
 
-                    <!-- Estimation (ACH) Input Group --><div id="estimateVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <!-- Estimation (ACH) Input Group -->
+                    <div id="estimateVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
                         <p class="text-xs text-gray-600">Calculates V<sub>a</sub> from Room Volume and Air Changes per Hour (ACH).</p>
                         <div>
                             <label for="roomType" class="block text-xs font-medium text-gray-700 mb-1">Room Type (Selects typical ACH)</label>
@@ -155,7 +165,8 @@
                         <div id="estimatedVaResult" class="text-sm text-center font-medium text-blue-700 hidden"></div>
                     </div>
 
-                    <!-- CFM Input Group --><div id="cfmVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <!-- CFM Input Group -->
+                    <div id="cfmVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
                         <p class="text-xs text-gray-600">Calculates V<sub>a</sub> from a fan or HVAC fresh air supply rating.</p>
                         <div>
                             <label for="fanCFM" class="block text-xs font-medium text-gray-700 mb-1">Fresh Air Supply (CFM)</label>
@@ -167,7 +178,8 @@
                         <div id="cfmVaResult" class="text-sm text-center font-medium text-blue-700 hidden"></div>
                     </div>
 
-                    <!-- Natural Cross-Side --><div id="naturalCrossVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <!-- Natural Cross-Side -->
+                    <div id="naturalCrossVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
                         <p class="text-xs text-gray-600"><b>Cross Ventilation</b> (e.g., open window + door):<br><code>Vₐ = 0.65 * wind * area * 1000</code></p>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
@@ -182,7 +194,8 @@
                         <div id="naturalCrossVaResult" class="text-sm text-center font-medium text-blue-700 hidden"></div>
                     </div>
 
-                    <!-- Natural Single-Side --><div id="naturalSingleVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <!-- Natural Single-Side -->
+                    <div id="naturalSingleVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
                         <p class="text-xs text-gray-600"><b>Single-Side Ventilation</b> (e.g., open window only):<br><code>Vₐ = 0.05 * wind * area * 1000</code></p>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
@@ -197,7 +210,8 @@
                         <div id="naturalSingleVaResult" class="text-sm text-center font-medium text-blue-700 hidden"></div>
                     </div>
 
-                    <!-- Mechanical --><div id="mechanicalVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
+                    <!-- Mechanical -->
+                    <div id="mechanicalVaGroup" class="hidden space-y-3 p-4 border border-gray-200 rounded-md bg-gray-50">
                         <p class="text-xs text-gray-600">Calculates V<sub>a</sub> from air velocity at vent: <br><code>Vₐ = velocity * area * 1000</code></p>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
@@ -213,27 +227,33 @@
                     </div>
                 </div>
 
-                <!-- Calculate Button --><button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-md shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                <!-- Calculate Button -->
+                <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-2.5 px-4 rounded-md shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
                     Calculate CO₂
                 </button>
             </form>
 
-            <!-- CO2 Result Display --><div id="co2-result-container" class="mt-6 hidden">
+            <!-- CO2 Result Display -->
+            <div id="co2-result-container" class="mt-6 hidden">
                 <div id="co2-result-card" class="rounded-md p-6">
                     <h3 class="text-sm font-medium text-center mb-2" id="co2-result-label">Estimated Indoor CO₂ Level</h3>
                     <p class="text-4xl md:text-5xl font-bold text-center" id="co2-result-value">
-                        <!-- Result will be injected here --></p>
+                        <!-- Result will be injected here -->
+                    </p>
                     <p class="text-center text-sm" id="co2-result-unit">ppm</p>
                     <p class="text-center text-xs text-gray-500 mt-2" id="co2-result-va-info"></p>
                     
-                    <!-- Button to proceed --><button id="goToRiskBtn" class="w-full mt-4 bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
+                    <!-- Button to proceed -->
+                    <button id="goToRiskBtn" class="w-full mt-4 bg-green-600 text-white font-semibold py-2 px-4 rounded-md shadow-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out">
                         Use this value for Risk Calculation
                     </button>
                 </div>
-                <!-- Error Message --><div id="co2-error-message" class="hidden mt-4 text-center text-red-600 font-medium"></div>
+                <!-- Error Message -->
+                <div id="co2-error-message" class="hidden mt-4 text-center text-red-600 font-medium"></div>
             </div>
 
-            <!-- Manual Entry Section --><div class="mt-6 pt-6 border-t border-gray-200">
+            <!-- Manual Entry Section -->
+            <div class="mt-6 pt-6 border-t border-gray-200">
                 <p class="text-center text-gray-600 mb-4 font-medium">
                     --- OR ---
                 </p>
@@ -254,7 +274,8 @@
                 </div>
             </div>
 
-            <!-- Info Button --><div class="text-center mt-6">
+            <!-- Info Button -->
+            <div class="text-center mt-6">
                 <button type="button" id="goToInfoBtn" class="text-sm text-blue-600 hover:underline">
                     Why does CO₂ level matter for risk?
                 </button>
@@ -264,8 +285,8 @@
 
     <!-- 
       PAGE 2: COVID RISK ESTIMATOR 
-      (Adapted from index.html, PM inputs removed)
-    --><div id="covidRiskPage" class="max-w-md w-full hidden-page">
+    -->
+    <div id="covidRiskPage" class="max-w-md w-full hidden-page">
         <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700">
             <h1 class="text-3xl font-bold text-center text-blue-400 mb-2">
                 Step 2: COVID-19 Risk
@@ -274,13 +295,17 @@
                 Based on T, H, and CO₂ threshold rules.
             </p>
 
-            <!-- Risk Input Form --><form id="risk-form" class="space-y-4">
-                <!-- Temperature --><div>
+            <!-- Risk Input Form -->
+            <form id="risk-form" class="space-y-4">
+                <!-- Temperature -->
+                <div>
                     <div class="flex justify-between items-center mb-1">
                         <label for="temperature" class="block text-sm font-medium text-gray-300">
                             Temperature (°C)
                         </label>
-                        <!-- MODIFIED Weather Button --><div class="blinking-button"> <!-- Added wrapper for blinking effect --><button type="button" id="getWeatherBtn" class="text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1">
+                        <!-- MODIFIED Weather Button -->
+                        <div class="blinking-button"> 
+                            <button type="button" id="getWeatherBtn" class="text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1">
                                 Get Temperature and Humidity from sensor data
                             </button>
                         </div>
@@ -288,44 +313,58 @@
                     <input type="text" inputmode="decimal" id="temperature" name="temperature" placeholder="e.g., 22.5" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
 
-                <!-- Humidity --><div>
+                <!-- Humidity -->
+                <div>
                     <label for="humidity" class="block text-sm font-medium text-gray-300 mb-1">
                         Humidity (%)
                     </label>
                     <input type="text" inputmode="decimal" id="humidity" name="humidity" placeholder="e.g., 55" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- NEW Weather Status Message --><p id="weather-status" class="text-xs text-center text-gray-400 hidden-page"></p>
+                <!-- NEW Weather Status Message -->
+                <p id="weather-status" class="text-xs text-center text-gray-400 hidden-page"></p>
 
-                <!-- CO2 --><div>
+                <!-- CO2 -->
+                <div>
                     <label for="co2" class="block text-sm font-medium text-gray-300 mb-1">
                         CO₂ Concentration (ppm)
                     </label>
                     <input type="text" inputmode="numeric" id="co2" name="co2" placeholder="e.g., 800" class="w-full p-3 rounded-md bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 
-                <!-- PM fields are permanently removed as requested --><!-- Error Message --><p id="risk-error-message" class="text-red-400 text-sm text-center hidden"></p>
+                <!-- Error Message -->
+                <p id="risk-error-message" class="text-red-400 text-sm text-center hidden"></p>
 
-                <!-- Submit Button --><button type="submit" class="w-full p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+                <!-- Submit Button -->
+                <button type="submit" class="w-full p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg">
                     Calculate Risk
                 </button>
             </form>
 
-            <!-- Risk Result Display --><div id="risk-results-container" class="mt-8 pt-6 border-t border-gray-700 space-y-6 hidden">
-                <!-- Threshold Risk (Fig 3) --><div id="threshold-risk-result" class="p-4 rounded-lg border">
+            <!-- Risk Result Display -->
+            <div id="risk-results-container" class="mt-8 pt-6 border-t border-gray-700 space-y-6 hidden">
+                <!-- Threshold Risk (Fig 3) -->
+                <div id="threshold-risk-result" class="p-4 rounded-lg border relative">
                     <h3 id="threshold-risk-level" class="text-xl font-bold"></h3>
                     <p id="threshold-risk-recommendation" class="mt-1 text-sm"></p>
                     <p class="text-xs text-gray-300 opacity-80 mt-2">
                         (Based on T, H, and CO₂ threshold rules)
                     </p>
                 </div>
-                <!-- PM Risk result is removed --></div>
+                
+                <!-- NEW: Email Alert Status Box -->
+                <div id="email-alert-status" class="hidden p-3 rounded-md bg-gray-900 border border-gray-600 text-xs text-center shadow-inner">
+                    <!-- Status injected here -->
+                </div>
+            </div>
 
-             <!-- Navigation Button --><button id="goToCo2Btn" class="w-full mt-6 text-sm text-gray-400 hover:text-white transition-colors">
+             <!-- Navigation Button -->
+             <button id="goToCo2Btn" class="w-full mt-6 text-sm text-gray-400 hover:text-white transition-colors">
                 &larr; Back to CO₂ Estimator
              </button>
 
-             <!-- Info Button --><button type="button" id="goToInfoBtn_risk" class="w-full mt-4 text-sm text-blue-400 hover:text-white transition-colors">
+             <!-- Info Button -->
+             <button type="button" id="goToInfoBtn_risk" class="w-full mt-4 text-sm text-blue-400 hover:text-white transition-colors">
                 Why does CO₂ matter? (Info)
              </button>
         </div>
@@ -333,8 +372,8 @@
 
     <!-- 
       PAGE 3: INFO PAGE
-      (New Content)
-    --><div id="infoPage" class="max-w-md w-full hidden-page">
+    -->
+    <div id="infoPage" class="max-w-md w-full hidden-page">
         <div class="w-full max-w-md bg-gray-800 p-8 rounded-xl shadow-2xl border border-gray-700 text-gray-300">
             <h1 class="text-2xl font-bold text-center text-blue-400 mb-6">
                 CO₂ as a Risk Proxy
@@ -362,26 +401,28 @@
                 <p class="font-semibold text-white">The best action is to bring in fresh outdoor air (ventilation), which dilutes and removes *both* CO₂ and infectious aerosols at the same time.</p>
             </div>
 
-            <!-- Back Button --><button id="backBtn_info" class="w-full mt-8 p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg">
+            <!-- Back Button -->
+            <button id="backBtn_info" class="w-full mt-8 p-3 rounded-md bg-blue-600 text-white font-bold hover:bg-blue-700 transition-colors duration-200 shadow-lg">
                 Back to App
             </button>
         </div>
     </div>
 
 
-    <!-- --- COMBINED JAVASCRIPT LOGIC --- --><script>
+    <!-- --- COMBINED JAVASCRIPT LOGIC --- -->
+    <script>
         // --- Page Navigation & Data Transfer ---
         let co2ValueToTransfer = null; // Use a variable, not localStorage
         let lastActivePage = 'co2'; // 'co2' or 'risk'
         
         const co2Page = document.getElementById('co2EstimatorPage');
         const riskPage = document.getElementById('covidRiskPage');
-        const infoPage = document.getElementById('infoPage'); // NEW
+        const infoPage = document.getElementById('infoPage'); 
         
         const goToRiskBtn = document.getElementById('goToRiskBtn');
         const goToCo2Btn = document.getElementById('goToCo2Btn');
         
-        // NEW Info Buttons
+        // Info Buttons
         const goToInfoBtn = document.getElementById('goToInfoBtn');
         const goToInfoBtn_risk = document.getElementById('goToInfoBtn_risk');
         const backBtn_info = document.getElementById('backBtn_info');
@@ -394,69 +435,57 @@
             
             co2Page.classList.add('hidden-page');
             riskPage.classList.remove('hidden-page');
-            infoPage.classList.add('hidden-page'); // HIDE INFO
-            lastActivePage = 'risk'; // SET LAST
+            infoPage.classList.add('hidden-page'); 
+            lastActivePage = 'risk'; 
         }
 
         function showCo2Page() {
             riskPage.classList.add('hidden-page');
-            infoPage.classList.add('hidden-page'); // HIDE INFO
+            infoPage.classList.add('hidden-page'); 
             co2Page.classList.remove('hidden-page');
-            lastActivePage = 'co2'; // SET LAST
+            lastActivePage = 'co2'; 
         }
 
-        // NEW Info Page Function
         function showInfoPage() {
             riskPage.classList.add('hidden-page');
-            co2Page.classList.add('hidden-page'); // HIDE CO2
-            infoPage.classList.remove('hidden-page'); // SHOW INFO
+            co2Page.classList.add('hidden-page'); 
+            infoPage.classList.remove('hidden-page'); 
         }
         
-        // NEW Back from Info Function
         function goBackFromInfo() {
-            infoPage.classList.add('hidden-page'); // HIDE INFO
+            infoPage.classList.add('hidden-page'); 
             if (lastActivePage === 'risk') {
                 riskPage.classList.remove('hidden-page');
             } else {
-                co2Page.classList.remove('hidden-page'); // Default to CO2 page
+                co2Page.classList.remove('hidden-page'); 
             }
         }
 
         // Attach navigation events
         goToRiskBtn.addEventListener('click', showRiskPage);
         goToCo2Btn.addEventListener('click', showCo2Page);
-        
-        // NEW Listeners
         goToInfoBtn.addEventListener('click', showInfoPage);
         goToInfoBtn_risk.addEventListener('click', showInfoPage);
         backBtn_info.addEventListener('click', goBackFromInfo);
 
-        // --- Start of CO2 Estimator JS (from Co2_estimation_corrected.html) ---
+        // --- Start of CO2 Estimator JS ---
         (function() {
-            // --- Constants ---
-            const CFM_TO_LPS = 0.471947; // 1 CFM ≈ 0.4719 L/s
+            // Constants
+            const CFM_TO_LPS = 0.471947; 
             const NATURAL_CROSS_COEFF = 0.65; 
             const NATURAL_SINGLE_COEFF = 0.05;
 
-            // --- Helper: Sanitize input for parseFloat ---
+            // Helper: Sanitize input
             function getFloat(id) {
                 const element = document.getElementById(id);
                 if (!element) return NaN;
-                
                 const value = element.value.trim().replace(',', '.');
-                
                 if (value === "") return NaN; 
-                
                 const isValidNumber = /^-?(\d+(\.\d*)?|\.\d+)$/.test(value);
-                
-                if (isValidNumber) {
-                    return parseFloat(value);
-                } else {
-                    return NaN;
-                }
+                return isValidNumber ? parseFloat(value) : NaN;
             }
 
-            // --- Get Elements ---
+            // Get Elements
             const vaModeSelect = document.getElementById('vaModeSelect');
             const directVaGroup = document.getElementById('directVaGroup');
             const estimateVaGroup = document.getElementById('estimateVaGroup');
@@ -472,7 +501,6 @@
             const naturalCrossVaResult = document.getElementById('naturalCrossVaResult');
             const mechanicalVaResult = document.getElementById('mechanicalVaResult');
 
-            // --- Mode Toggle Event Listener ---
             vaModeSelect.addEventListener('change', (e) => {
                 const mode = e.target.value;
                 directVaGroup.classList.toggle('hidden', mode !== 'direct');
@@ -482,19 +510,13 @@
                 naturalCrossVaGroup.classList.toggle('hidden', mode !== 'naturalCross');
                 mechanicalVaGroup.classList.toggle('hidden', mode !== 'mechanical');
 
-                if (mode === 'estimate') {
-                    updateEstimatedVa();
-                }
+                if (mode === 'estimate') updateEstimatedVa();
             });
 
-            // --- Helper Functions for Va Calculation ---
             function checkAndUpdateEstimatedVa() {
-                if (vaModeSelect.value === 'estimate') {
-                    updateEstimatedVa();
-                }
+                if (vaModeSelect.value === 'estimate') updateEstimatedVa();
             }
 
-            // --- ACH Estimation ---
             function updateEstimatedVa() {
                 const length = getFloat('roomLength');
                 const width = getFloat('roomWidth');
@@ -512,7 +534,7 @@
                 estimatedVaResult.classList.add('text-blue-700');
 
                 if (!isNaN(ach)) {
-                    const volume = length * width * height; // m³
+                    const volume = length * width * height; 
                     const vA = (ach * volume) / 3.6;
                     estimatedVaResult.textContent = `Estimated Vₐ: ${vA.toFixed(2)} L/s`;
                     estimatedVaResult.classList.remove('hidden');
@@ -526,7 +548,6 @@
             document.getElementById('roomHeight').addEventListener('input', checkAndUpdateEstimatedVa);
             document.getElementById('roomType').addEventListener('change', checkAndUpdateEstimatedVa);
 
-            // --- CFM Calculation ---
             function updateCFMVa() {
                 const cfm = getFloat('fanCFM');
                 if (!isNaN(cfm)) {
@@ -540,7 +561,6 @@
             }
             fanCFMInput.addEventListener('input', updateCFMVa);
 
-            // --- Natural Single-Side ---
             function updateNaturalSingleVa() {
                 const wind = getFloat('natSingleWind');
                 const area = getFloat('natSingleArea');
@@ -556,7 +576,6 @@
             document.getElementById('natSingleWind').addEventListener('input', updateNaturalSingleVa);
             document.getElementById('natSingleArea').addEventListener('input', updateNaturalSingleVa);
 
-            // --- Natural Cross-Side ---
             function updateNaturalCrossVa() {
                 const wind = getFloat('natCrossWind');
                 const area = getFloat('natCrossArea');
@@ -572,7 +591,6 @@
             document.getElementById('natCrossWind').addEventListener('input', updateNaturalCrossVa);
             document.getElementById('natCrossArea').addEventListener('input', updateNaturalCrossVa);
 
-            // --- Mechanical ---
             function updateMechanicalVa() {
                 const velocity = getFloat('mechVelocity');
                 const area = getFloat('mechArea');
@@ -588,7 +606,6 @@
             document.getElementById('mechVelocity').addEventListener('input', updateMechanicalVa);
             document.getElementById('mechArea').addEventListener('input', updateMechanicalVa);
 
-            // --- Main Form Submission ---
             document.getElementById('co2Form').addEventListener('submit', function(event) {
                 event.preventDefault(); 
 
@@ -603,7 +620,6 @@
                 errorMessage.textContent = '';
                 resultVaInfo.textContent = '';
 
-                // --- Get Ventilation Rate (Va) ---
                 let vA;
                 let vaSourceInfo = '';
                 const selectedMode = vaModeSelect.value;
@@ -638,12 +654,10 @@
                     break;
                 }
 
-                // --- Get other values ---
                 const cOutdoor = getFloat('cOutdoor');
                 const r = getFloat('co2Rate');
                 const n = getFloat('occupants');
 
-                // --- Validate inputs ---
                 if (isNaN(cOutdoor) || isNaN(r) || isNaN(n)) {
                     errorMessage.textContent = 'Please enter valid numbers for CO₂, Occupants, and Rate.';
                     errorMessage.classList.remove('hidden');
@@ -651,30 +665,19 @@
                     return;
                 }
 
-                if (isNaN(vA)) {
-                    errorMessage.textContent = 'Please enter valid numbers in the selected Vₐ section to calculate a ventilation rate.';
+                if (isNaN(vA) || vA <= 0) {
+                    errorMessage.textContent = 'Please enter valid positive numbers in the selected Vₐ section.';
                     errorMessage.classList.remove('hidden');
                     resultContainer.classList.add('hidden');
                     return;
                 }
 
-                if (vA <= 0) {
-                    errorMessage.textContent = 'Ventilation Rate (Va) must be greater than zero.';
-                    errorMessage.classList.remove('hidden');
-                    resultContainer.classList.add('hidden');
-                    return;
-                }
-
-                // --- Perform the calculation ---
                 const addedCO2_fraction = (r * n) / vA;
                 const addedCO2_ppm = addedCO2_fraction * 1_000_000;
                 const cIndoor = cOutdoor + addedCO2_ppm;
                 const cIndoorRounded = cIndoor.toFixed(0);
 
-                // --- Store value in our variable ---
                 co2ValueToTransfer = cIndoorRounded;
-
-                // --- Display the result ---
                 resultValue.textContent = cIndoorRounded;
                 
                 let achInfo = '';
@@ -690,7 +693,6 @@
                 }
                 resultVaInfo.textContent = vaSourceInfo + achInfo;
                 
-                // Update result card color
                 resultCard.classList.remove('bg-green-100', 'text-green-900', 'bg-yellow-100', 'text-yellow-900', 'bg-red-100', 'text-red-900');
                 let labelText = 'Estimated Indoor CO₂ Level';
                 let labelColor = 'text-gray-700';
@@ -711,86 +713,70 @@
                 
                 resultLabel.textContent = labelText;
                 resultLabel.className = `text-sm font-medium text-center mb-2 ${labelColor}`;
-
                 resultContainer.classList.remove('hidden');
             });
 
-            // --- Manual CO2 Submission ---
             const goToRiskManualBtn = document.getElementById('goToRiskManualBtn');
             const manualCo2Input = document.getElementById('manualCo2Input');
             const manualCo2Error = document.getElementById('manual-co2-error');
 
             goToRiskManualBtn.addEventListener('click', function() {
-                // Use the *same* getFloat helper
                 const co2Val = getFloat('manualCo2Input'); 
-                
                 if (isNaN(co2Val) || co2Val <= 0) {
                     manualCo2Error.textContent = 'Please enter a valid CO₂ value (e.g., 850).';
                     manualCo2Error.classList.remove('hidden');
                 } else {
                     manualCo2Error.classList.add('hidden');
-                    // Store the manually entered value in our variable
                     co2ValueToTransfer = co2Val.toFixed(0);
-                    
-                    // Go to the risk page
                     showRiskPage(); 
                 }
             });
-
         })();
-        // --- End of CO2 Estimator JS ---
 
-
-        // --- Start of COVID Risk JS (from index.html, modified) ---
+        // --- Start of COVID Risk JS ---
         (function() {
-             // --- Helper Function: Risk Calculation Logic (Figure 3) ---
             const calculateRisk = (temp, humidity, co2) => {
                 if (co2 > 1000) {
-                return {
-                    level: 'High',
-                    color: 'bg-red-600',
-                    textColor: 'text-red-100',
-                    borderColor: 'border-red-500',
-                    recommendation:
-                    'High CO₂ detected. Immediate ventilation is strongly recommended.',
-                };
+                    return {
+                        level: 'High',
+                        color: 'bg-red-600',
+                        textColor: 'text-red-100',
+                        borderColor: 'border-red-500',
+                        recommendation: 'High CO₂ detected. Immediate ventilation is strongly recommended.',
+                    };
                 }
                 if ((temp > 24 && co2 <= 700) || (humidity < 50 && co2 <= 700)) {
-                return {
-                    level: 'Low',
-                    color: 'bg-green-600',
-                    textColor: 'text-green-100',
-                    borderColor: 'border-green-500',
-                    recommendation: 'Conditions are favorable. Maintain good practices.',
-                };
+                    return {
+                        level: 'Low',
+                        color: 'bg-green-600',
+                        textColor: 'text-green-100',
+                        borderColor: 'border-green-500',
+                        recommendation: 'Conditions are favorable. Maintain good practices.',
+                    };
                 }
                 return {
-                level: 'Medium',
-                color: 'bg-yellow-500',
-                textColor: 'text-yellow-100',
-                borderColor: 'border-yellow-400',
-                recommendation:
-                    'Monitor conditions. Consider increasing ventilation or reducing occupancy.',
+                    level: 'Medium',
+                    color: 'bg-yellow-500',
+                    textColor: 'text-yellow-100',
+                    borderColor: 'border-yellow-400',
+                    recommendation: 'Monitor conditions. Consider increasing ventilation or reducing occupancy.',
                 };
             };
             
-            // --- All possible color classes to remove ---
             const allColorClasses = [
                 'bg-red-600', 'text-red-100', 'border-red-500',
                 'bg-green-600', 'text-green-100', 'border-green-500',
                 'bg-yellow-500', 'text-yellow-100', 'border-yellow-400'
             ];
             
-            // Helper to get float from text input
             const getRiskFloat = (el) => {
-                    if (!el) return NaN;
-                    const value = el.value.trim().replace(',', '.');
-                    if (value === "") return NaN;
-                    const isValidNumber = /^-?(\d+(\.\d*)?|\.\d+)$/.test(value);
-                    return isValidNumber ? parseFloat(value) : NaN;
+                if (!el) return NaN;
+                const value = el.value.trim().replace(',', '.');
+                if (value === "") return NaN;
+                const isValidNumber = /^-?(\d+(\.\d*)?|\.\d+)$/.test(value);
+                return isValidNumber ? parseFloat(value) : NaN;
             }
 
-            // --- Get all DOM elements ---
             const form = document.getElementById('risk-form');
             const inputs = {
                 temperature: document.getElementById('temperature'),
@@ -799,55 +785,86 @@
             };
             const errorMessage = document.getElementById('risk-error-message');
             const resultsContainer = document.getElementById('risk-results-container');
+            const emailAlertStatusEl = document.getElementById('email-alert-status');
             
             const thresholdRiskResultEl = document.getElementById('threshold-risk-result');
             const thresholdRiskLevelEl = document.getElementById('threshold-risk-level');
             const thresholdRiskRecommendationEl = document.getElementById('threshold-risk-recommendation');
 
-            // --- Handle form submission ---
             form.addEventListener('submit', (e) => {
                 e.preventDefault(); 
                 
                 errorMessage.textContent = '';
-                errorMessage.classList.add('hidden'); // Hide error
-                resultsContainer.classList.add('hidden'); // Hide old results
+                errorMessage.classList.add('hidden'); 
+                resultsContainer.classList.add('hidden'); 
+                emailAlertStatusEl.classList.add('hidden'); // Reset email status
 
-                // --- Get and parse values ---
                 const temp = getRiskFloat(inputs.temperature);
                 const hum = getRiskFloat(inputs.humidity);
                 const co2Val = getRiskFloat(inputs.co2);
 
-                // --- Input Validation ---
                 if (isNaN(temp) || isNaN(hum) || isNaN(co2Val)) {
                     errorMessage.textContent = 'Please fill in all fields with valid numbers.';
-                    errorMessage.classList.remove('hidden'); // Show error
+                    errorMessage.classList.remove('hidden'); 
                     return;
                 }
                 if (hum < 0 || hum > 100) {
                     errorMessage.textContent = 'Humidity must be between 0 and 100.';
-                    errorMessage.classList.remove('hidden'); // Show error
+                    errorMessage.classList.remove('hidden'); 
                     return;
                 }
                 if (co2Val < 0) {
                     errorMessage.textContent = 'CO2 value cannot be negative.';
-                    errorMessage.classList.remove('hidden'); // Show error
+                    errorMessage.classList.remove('hidden'); 
                     return;
                 }
 
-                // --- All data is valid, run calculations ---
                 const riskResult = calculateRisk(temp, hum, co2Val);
 
-                // --- Update Threshold Risk Card ---
                 thresholdRiskLevelEl.textContent = `${riskResult.level} Threshold Risk`;
                 thresholdRiskRecommendationEl.textContent = riskResult.recommendation;
                 thresholdRiskResultEl.classList.remove(...allColorClasses);
                 thresholdRiskResultEl.classList.add(riskResult.color, riskResult.textColor, riskResult.borderColor);
 
-                // Show the results
                 resultsContainer.classList.remove('hidden');
+
+                // --- NEW EMAIL ALERT LOGIC ---
+                if (riskResult.level === 'High') {
+                    emailAlertStatusEl.classList.remove('hidden');
+                    emailAlertStatusEl.innerHTML = `<span class="text-yellow-400 animate-pulse">Sending real-time alert to vishnusreejith86@gmail.com...</span>`;
+                    
+                    // Call FormSubmit AJAX endpoint
+                    fetch("https://formsubmit.co/ajax/vishnusreejith86@gmail.com", {
+                        method: "POST",
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            _subject: "⚠️ High COVID-19 Risk Alert Generated by App",
+                            Risk_Level: "HIGH",
+                            Temperature: `${temp} °C`,
+                            Humidity: `${hum} %`,
+                            CO2_Level: `${co2Val} ppm`,
+                            Recommendation: riskResult.recommendation,
+                            _template: "table" // Built-in formatter
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        emailAlertStatusEl.innerHTML = `
+                            <div class="text-green-400 font-bold mb-1">✔ Alert sent to vishnusreejith86@gmail.com!</div>
+                            <div class="text-gray-400 text-[10px] leading-tight">(Note: If this is the first time, you must click "Activate" on the automated email sent to your inbox to enable future alerts.)</div>
+                        `;
+                    })
+                    .catch(error => {
+                        console.error('Email alert error:', error);
+                        emailAlertStatusEl.innerHTML = `<span class="text-red-400">✖ Failed to send email alert. Please check your internet connection.</span>`;
+                    });
+                }
             });
             
-            // --- NEW: Weather Fetch Logic ---
+            // --- Weather Fetch Logic ---
             const getWeatherBtn = document.getElementById('getWeatherBtn');
             const weatherStatus = document.getElementById('weather-status');
             
@@ -859,10 +876,8 @@
                     return;
                 }
 
-                // Reset state
                 getWeatherBtn.disabled = true;
                 getWeatherBtn.textContent = 'Fetching...';
-                // Also remove the blinking class while fetching
                 getWeatherBtn.parentElement.classList.remove('blinking-button'); 
                 weatherStatus.classList.add('hidden-page');
                 weatherStatus.classList.remove('text-red-400');
@@ -870,21 +885,14 @@
                 const successCallback = async (position) => {
                     try {
                         const { latitude, longitude } = position.coords;
-                        // Use the Open-Meteo API (no key required)
                         const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m`;
                         
                         const response = await fetch(apiUrl);
-                        if (!response.ok) {
-                            throw new Error('Weather API request failed.');
-                        }
+                        if (!response.ok) throw new Error('Weather API request failed.');
                         const data = await response.json();
                         
-                        const temp = data.current.temperature_2m;
-                        const hum = data.current.relative_humidity_2m;
-                        
-                        // Populate the fields
-                        inputs.temperature.value = temp;
-                        inputs.humidity.value = hum;
+                        inputs.temperature.value = data.current.temperature_2m;
+                        inputs.humidity.value = data.current.relative_humidity_2m;
                         
                         weatherStatus.textContent = 'Sensor data populated.';
                         weatherStatus.classList.remove('hidden-page');
@@ -896,37 +904,31 @@
                     } finally {
                         getWeatherBtn.disabled = false;
                         getWeatherBtn.textContent = 'Get temperature and humidity from sensor data';
-                        // Re-add blinking class
                         getWeatherBtn.parentElement.classList.add('blinking-button'); 
                     }
                 };
 
                 const errorCallback = (error) => {
                     let message = 'Could not get location. Please enter manually.';
-                    if (error.code === error.PERMISSION_DENIED) {
-                        message = 'You denied location permission. Please enter manually.';
-                    } else if (error.code === error.POSITION_UNAVAILABLE) {
-                        message = 'Location information is unavailable.';
-                    } else if (error.code === error.TIMEOUT) {
-                        message = 'Location request timed out.';
-                    }
+                    if (error.code === error.PERMISSION_DENIED) message = 'You denied location permission. Please enter manually.';
+                    else if (error.code === error.POSITION_UNAVAILABLE) message = 'Location information is unavailable.';
+                    else if (error.code === error.TIMEOUT) message = 'Location request timed out.';
+                    
                     weatherStatus.textContent = message;
                     weatherStatus.classList.remove('hidden-page');
                     weatherStatus.classList.add('text-red-400');
                     getWeatherBtn.disabled = false;
                     getWeatherBtn.textContent = 'Get temperature and humidity from sensor data';
-                    // Re-add blinking class
                     getWeatherBtn.parentElement.classList.add('blinking-button');
                 };
 
                 navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
             });
-            // --- End of NEW Weather Logic ---
 
         })();
-        // --- End of COVID Risk JS ---
     </script>
 </body>
 </html>
+
 
 
